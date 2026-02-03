@@ -1,7 +1,9 @@
 package com.example.litearula;
 
+import com.example.litearula.external.GutendexClient;
 import com.example.litearula.models.Author;
 import com.example.litearula.models.Book;
+import com.example.litearula.service.DataConverter;
 
 import java.util.Scanner;
 
@@ -56,7 +58,19 @@ public class Principal {
         }
 
     }
+
     private void searchBooks() {
+        Book book = new Book();
+        DataConverter converter = new DataConverter();
+        GutendexClient client = new GutendexClient();
+        final String baseUrl = "https://gutendex.com/books?";
+        final String searchParams = "search=";
+        final String userInput;
+        System.out.println("Please enter the book you want to search: ");
+        userInput = input.nextLine().toLowerCase().replace(" ", "%20");
+        var clientJson = client.getDataApi(baseUrl + searchParams + userInput);
+        var dataConverter = converter.parseJson(clientJson, Book.class);
+
     }
     private void showRegisteredBooks() {
     }
