@@ -9,7 +9,9 @@ import java.net.http.HttpResponse;
 public class GutendexClient {
 
     public String getDataApi(String url) {
-        HttpClient client = HttpClient.newHttpClient();
+        HttpClient client = HttpClient.newBuilder()
+                .followRedirects(HttpClient.Redirect.NORMAL)
+                .build();
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(url))
                 .build();
@@ -18,6 +20,7 @@ public class GutendexClient {
             response = client
                     .send(request, HttpResponse.BodyHandlers.ofString());
 
+
     } catch (IOException e) {
             throw new RuntimeException(e);
         } catch (InterruptedException e) {
@@ -25,5 +28,6 @@ public class GutendexClient {
         }
         String json = response.body();
         return json;
+
     }
 }

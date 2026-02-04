@@ -1,20 +1,18 @@
 package com.example.litearula.models;
 
-import java.util.Scanner;
-
 public class Book {
     private int id;
-    private String author;
+    private String authors;
     private String title;
-    private String language;
+    private String languages;
     private double downloadCount;
 
     public Book(){}
     public Book(int id, String author, String title, String language, double downloadCount) {
         this.id = id;
-        this.author = author;
+        this.authors = author;
         this.title = title;
-        this.language = language;
+        this.languages = language;
         this.downloadCount = downloadCount;
     }
 
@@ -26,12 +24,12 @@ public class Book {
         this.id = id;
     }
 
-    public String getAuthor() {
-        return author;
+    public String getAuthors() {
+        return authors;
     }
 
-    public void setAuthor(String author) {
-        this.author = author;
+    public void setAuthors(String authors) {
+        this.authors = authors;
     }
 
     public String getTitle() {
@@ -42,12 +40,12 @@ public class Book {
         this.title = title;
     }
 
-    public String getLanguage() {
-        return language;
+    public String getLanguages() {
+        return languages;
     }
 
-    public void setLanguage(String language) {
-        this.language = language;
+    public void setLanguages(String languages) {
+        this.languages = languages;
     }
 
     public double getDownloadCount() {
@@ -60,11 +58,10 @@ public class Book {
 
     @Override
     public String toString() {
-        return ", title= '" + title + '\'' +
-               "id= " + id +
-               ", author= '" + author + '\'' +
-               ", language= '" + language + '\'' +
-               ", downloadCount= " + downloadCount;
-
+        return "title = '" + title + '\'' +
+               ", id = " + id +
+               ", authors = '" + authors + '\'' +
+               ", language = '" + languages + '\'' +
+               ", download count = " + downloadCount;
     }
 }

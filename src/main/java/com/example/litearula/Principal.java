@@ -1,14 +1,22 @@
 package com.example.litearula;
 
 import com.example.litearula.external.GutendexClient;
-import com.example.litearula.models.Author;
 import com.example.litearula.models.Book;
+import com.example.litearula.models.ContainerBook;
 import com.example.litearula.service.DataConverter;
-
+import org.springframework.stereotype.Component;
 import java.util.Scanner;
 
 public class Principal {
     Scanner input = new Scanner(System.in);
+    DataConverter converter;
+    GutendexClient client;
+
+    public Principal(DataConverter converter, GutendexClient client) {
+        this.converter = converter;
+        this.client = client;
+    }
+
 
     public void showMenu() {
         System.out.println(
@@ -60,17 +68,19 @@ public class Principal {
     }
 
     private void searchBooks() {
-        Book book = new Book();
-        DataConverter converter = new DataConverter();
-        GutendexClient client = new GutendexClient();
         final String baseUrl = "https://gutendex.com/books?";
         final String searchParams = "search=";
         final String userInput;
         System.out.println("Please enter the book you want to search: ");
         userInput = input.nextLine().toLowerCase().replace(" ", "%20");
-        var clientJson = client.getDataApi(baseUrl + searchParams + userInput);
-        var dataConverter = converter.parseJson(clientJson, Book.class);
-
+        var json = client.getDataApi(baseUrl + searchParams + userInput);
+        var dataContainer = converter.parseJson(json, ContainerBook.class);
+        if (dataContainer.results().isEmpty()) {
+            System.out.println("No books found!");
+        } else {
+            var book = dataContainer.results().get(0);
+            System.out.println(book);
+        }
     }
     private void showRegisteredBooks() {
     }
