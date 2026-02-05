@@ -1,15 +1,14 @@
 package com.example.litearula;
 
 import com.example.litearula.external.GutendexClient;
-import com.example.litearula.models.Author;
-import com.example.litearula.models.Book;
-import com.example.litearula.models.BookDatas;
-import com.example.litearula.models.ContainerBook;
+import com.example.litearula.models.*;
+import com.example.litearula.repository.AuthorRepository;
 import com.example.litearula.repository.BookRepository;
 import com.example.litearula.service.DataConverter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Scanner;
 
 public class Principal {
@@ -17,13 +16,15 @@ public class Principal {
     DataConverter converter;
     GutendexClient client;
     private final BookRepository bookRepository;
+    private final AuthorRepository authorRepository;
     private List<Book> books;
 
 
-    public Principal(DataConverter converter, GutendexClient client, BookRepository bookRepository) {
+    public Principal(DataConverter converter, GutendexClient client, BookRepository bookRepository, AuthorRepository authorRepository) {
         this.converter = converter;
         this.client = client;
         this.bookRepository = bookRepository;
+        this.authorRepository = authorRepository;
     }
 
     public void showMenu() {
@@ -99,12 +100,27 @@ public class Principal {
                     ? "N/A"
                     : bookData.languages().get(0);
 
-            Author authorData = new Author();
-            Book book = new Book(apiId, title, language, downloadCount);
-            book.setAuthor(authorData);
-            bookRepository.save(book);
-            List<Author> authors = new ArrayList<>();
-            System.out.println(book);
+
+            var authorDatas = bookData.authors();
+            String nameAuthor = authorDatas.get(0).name();
+            Author finalAuthor = null;
+            if(!authorDatas.isEmpty()) {
+                Optional<Author> authorFind = authorRepository.findByNameContainingIgnoreCase(nameAuthor);
+                if (authorFind.isPresent()) {
+                    finalAuthor = authorFind.get();
+                } else {
+                    var add = authorDatas.get(0);
+                    Author createdAuthor = new Author();
+                    createdAuthor.setName(nameAuthor);
+                    createdAuthor.setBirthYear(add.birthYear());
+                    createdAuthor.setDeathYear(add.deathYear());
+                    finalAuthor = authorRepository.save(createdAuthor);
+                }
+                Book book = new Book(apiId, title, language, downloadCount);
+                book.setAuthor(finalAuthor);
+                bookRepository.save(book);
+                System.out.println(book);
+            }
         }
     }
 

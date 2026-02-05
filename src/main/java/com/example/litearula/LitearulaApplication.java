@@ -1,6 +1,7 @@
 package com.example.litearula;
 
 import com.example.litearula.external.GutendexClient;
+import com.example.litearula.repository.AuthorRepository;
 import com.example.litearula.repository.BookRepository;
 import com.example.litearula.service.DataConverter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,13 +17,16 @@ public class LitearulaApplication implements CommandLineRunner {
     @Autowired
     BookRepository bookRepository;
 
+    @Autowired
+    AuthorRepository authorRepository;
+
     public static void main(String[] args) {
         SpringApplication.run(LitearulaApplication.class, args);
     }
 
     @Override
     public void run(String... args) throws Exception {
-        Principal principal = new Principal(converter, client, bookRepository);
+        Principal principal = new Principal(converter, client, bookRepository, authorRepository);
         principal.showMenu();
     }
 }
