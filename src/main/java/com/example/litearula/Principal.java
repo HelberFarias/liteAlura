@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class Principal {
     Scanner input = new Scanner(System.in);
@@ -100,11 +101,10 @@ public class Principal {
                     ? "N/A"
                     : bookData.languages().get(0);
 
-
             var authorDatas = bookData.authors();
-            String nameAuthor = authorDatas.get(0).name();
-            Author finalAuthor = null;
             if(!authorDatas.isEmpty()) {
+                String nameAuthor = authorDatas.get(0).name();
+                Author finalAuthor = null;
                 Optional<Author> authorFind = authorRepository.findByNameContainingIgnoreCase(nameAuthor);
                 if (authorFind.isPresent()) {
                     finalAuthor = authorFind.get();
@@ -130,11 +130,30 @@ public class Principal {
     }
 
     private void showAuthors() {
+        authorRepository.findAll()
+                .stream()
+                .forEach(System.out::println);
     }
 
     private void showLivingAuthors() {
+         List<Author> aliveAuthors = authorRepository.findAll()
+                .stream()
+                .filter(a -> a.getDeathYear() == null)
+                .collect(Collectors.toList());
+         aliveAuthors.stream().forEach(System.out::println);
+
     }
 
     private void showBooksByLanguage() {
+        System.out.println("""
+                Please, enter de language: 
+                -- PT --
+                -- EN --
+                -- FR --
+                -- FI --
+                """);
+        String choiceLanguages = input.nextLine().toLowerCase();
+        List<Book> languageBook = bookRepository.findByLanguagesContainingIgnoreCase(choiceLanguages);
+        languageBook.forEach(System.out::println);
     }
 }

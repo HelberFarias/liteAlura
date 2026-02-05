@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name = "author")
+@Table(name = "authors")
 public class Author {
     @Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)
@@ -36,16 +36,16 @@ public class Author {
     public void setName(String name) {
         this.name = name;
     }
-    public int getBirthYear() {
+    public Integer getBirthYear() {
         return birthYear;
     }
-    public void setBirthYear(int birthYear) {
+    public void setBirthYear(Integer birthYear) {
         this.birthYear = birthYear;
     }
-    public int getDeathYear() {
+    public Integer getDeathYear() {
         return deathYear;
     }
-    public void setDeathYear(int deathYear) {
+    public void setDeathYear(Integer deathYear) {
         this.deathYear = deathYear;
     }
     @Override

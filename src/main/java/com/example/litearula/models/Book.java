@@ -18,49 +18,61 @@ public class Book {
     private Author author;
 
     public Book(){}
-    public Book(int apiId, String title, String language, double downloadCount) {
+    public Book(int apiId, String title, String languages, double downloadCount) {
         this.apiId = apiId;
         this.title = title;
-        this.languages = language;
+        this.languages = languages;
         this.downloadCount = downloadCount;
     }
 
     public Author getAuthor() {
         return author;
     }
+
     public void setAuthor(Author author) {
         this.author = author;
     }
+
     public Long getId() {
         return id;
     }
+
     public void setId(Long id) {
         this.id = id;
     }
+
     public int getApiId() {
         return apiId;
     }
+
     public void setApiId(int apiId) {
         this.apiId = apiId;
     }
+
     public String getTitle() {
         return title;
     }
+
     public void setTitle(String title) {
         this.title = title;
     }
+
     public String getLanguages() {
         return languages;
     }
+
     public void setLanguages(String languages) {
         this.languages = languages;
     }
+
     public double getDownloadCount() {
         return downloadCount;
     }
+
     public void setDownloadCount(double downloadCount) {
         this.downloadCount = downloadCount;
     }
+
     @Override
     public String toString() {
         return "title = '" + title + '\'' +
